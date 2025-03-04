@@ -12,16 +12,12 @@ function AddCourse() {
     event.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:5000/courses', {  // Changed api.post to axios.post, and added the full url for testing
-        name,
-        description,
-        credits,
-      });
+      const response = await api.post('/courses', { name, description, credits });
       console.log('Course created:', response.data);
-      navigate('/courses');
+      navigate('/courses'); // Redirect to the course list
     } catch (error) {
       console.error('Error creating course:', error);
-      alert('Failed to create course' + (error.message || 'Unknown error'));
+      alert('Failed to create course: ' + (error.message || 'Unknown error'));
     }
   }
 

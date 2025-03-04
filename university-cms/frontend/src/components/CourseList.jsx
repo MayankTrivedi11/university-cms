@@ -4,6 +4,7 @@ import api from '../services/api';
 
 function CourseList() {
   const [courses, setCourses] = useState([]);
+  const [selectedCourseId, setSelectedCourseId] = useState(null); // State to track the selected course
 
   useEffect(() => {
     async function fetchCourses() {
@@ -27,6 +28,10 @@ function CourseList() {
     { id: '3', name: 'Python for Data Science', description: 'Using Python for data analysis', credits: 3 },
   ];
 
+  const handleCourseClick = (courseId) => {
+    setSelectedCourseId(courseId === selectedCourseId ? null : courseId); // Toggle selection
+  };
+
   return (
     <div>
       <h2>Course List</h2>
@@ -34,7 +39,15 @@ function CourseList() {
         {courses.length > 0 ? (
           courses.map(course => (
             <li key={course.id}>
-              <Link to={`/courses/${course.id}`}>{course.name}</Link>
+              <Link to={`/courses/${course.id}`} onClick={(e) => {
+                  e.preventDefault(); // Prevent default link behavior
+                  handleCourseClick(course.id);
+                }}>
+                  {course.name}
+              </Link>
+              {selectedCourseId === course.id && (
+                <p>{course.description}</p>
+              )}
             </li>
           ))
         ) : (
